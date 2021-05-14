@@ -1,5 +1,5 @@
 # CBalloons
-A program that displays ascending balloons.
+A terminal program that displays ascending balloons.
 
 
 ## Nice balloons to show to your mother.
