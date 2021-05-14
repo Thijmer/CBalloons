@@ -42,7 +42,12 @@ typedef struct balloons {
 void mainloop(int min_radius, int max_radius, int min_string_length, int max_string_length, char *balloon_chars, char* balloon_string_chars, char cycles_per_balloon, char nrofbloonchars, char nrofstringchars, float sleep_time) {
     long row = 0;
     char CharacterIsNTimesLongerInHeightThanInWidth = 2;
-    int array_size = (max_radius*2+max_string_length)/cycles_per_balloon;
+    int array_size;
+    if (max_radius + max_string_length > 0) { // This if statement exists for the people who want to make balloons that don't exist. (Radius = 0 and string length = 0)
+        array_size = (max_radius*2+max_string_length)/cycles_per_balloon;
+    } else {
+        array_size = 1;
+    }
     balloon balloons[array_size];
     int creation_index = 0;
     {//Fill aray with balloons that aren't going to be rendered.
@@ -71,7 +76,9 @@ void mainloop(int min_radius, int max_radius, int min_string_length, int max_str
             }
             
             balloons[creation_index].radius = radius;
-            balloons[creation_index].string_length = min_string_length + (random() % (max_string_length - min_string_length));
+            if (max_string_length > 0) {
+                balloons[creation_index].string_length = min_string_length + (random() % (max_string_length - min_string_length));
+            } else {balloons[creation_index].string_length = 0;}
             balloons[creation_index].balloon_char = balloon_chars[random() % nrofbloonchars];
             balloons[creation_index].string_char = balloon_string_chars[random() % nrofstringchars];
             creation_index ++;
@@ -117,32 +124,48 @@ int main(int argc, char *argv[]) { //Parse parameters and start program
         switch(opt) {
             case 'b':
                 nrofbloonchars = strlen(optarg);
+                if (nrofbloonchars == 0) {
+                    fprintf(stderr, "Why are you running this program if you don't want to have any balloons?\n(Balloon text is set empty)\n");
+                    return 128;
+                }
                 strcpy(balloon_chars, optarg);
                 break;
             case 's':
                 nrofstringchars = strlen(optarg);
+                if (nrofstringchars == 0) {
+                    fprintf(stderr, "Strings made from negative matter?\n(String text is set empty)\n");
+                    return 128;
+                }
                 strcpy(balloon_string_chars, optarg);
                 break;
             case 'm':
                 min_radius = atoi(optarg);
+                if (min_radius < 0) {fprintf(stderr, "A balloon can not have a negative radius. (unless it's made from dark matter of course)\n(m(=min radius) is %s)\n", optarg);return 128;}
                 break;
             case 'r':
                 max_radius = atoi(optarg);
+                if (max_radius < 0) {fprintf(stderr, "A balloon can not have a negative radius. (unless it's made from dark matter of course)\n(r(=max radius) is %s)\n", optarg);return 128;}
                 break;
             case 'l':
                 max_string_length = atoi(optarg);
+                if (max_string_length < 0) {fprintf(stderr, "A string can not have a negative length. (unless it's made from dark matter of course)\n(l(=max string length) is %s)\n", optarg);return 128;}
                 break;
             case 't':
                 min_string_length = atoi(optarg);
+                if (min_string_length < 0) {fprintf(stderr, "A string can not have a negative length. (unless it's made from dark matter of course)\n(t(=min string length) is %s)\n", optarg);return 128;}
                 break;
             case 'w':
                 sleep_time = (float)strtod(optarg, NULL);
+                if (sleep_time < 0) {fprintf(stderr, "Time travelling is not supported.\n(w(=tick duration in seconds) is %s)\n", optarg);return 128;}
                 break;
             case 'c':
                 columns = atoi(optarg);
                 custom_column_count = 1;
                 if (columns == 0) {
-                    fprintf(stderr, "The width of the output cannot be set to zero.\n");
+                    fprintf(stderr, "The width of the output cannot be set to zero.\n(c(=columns) is %s)\n", optarg);
+                    return 128;
+                } else if (columns < 0) {
+                    fprintf(stderr, "The terminal width can not be negative. (unless your computer is made from dark matter of course)\n(c(=columns) is %s)\n", optarg);
                     return 128;
                 }
                 break;
