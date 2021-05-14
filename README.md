@@ -2,10 +2,10 @@
 A terminal program that displays ascending balloons.
 
 
-## Nice balloons to show to your mother.
-Baloons made up of different characters that fly up your terminal. Yess niceness in the terminal.
-This program can be piped into other programs (e.g. lolcat to give it nice colors). It resizes with the terminal if an amount of columns is not manually specified. This resizing behaviour does not work when piping it into another program.
-Tested on Linux. Maybe compatible with POSIX compatible OSes. Certainly not compatible with windows (unless you use WSL of course).
+## Nice balloons.
+This program displays balloons that are made up of different characters and fly up your terminal.
+This program can be piped into other programs (e.g. lolcat to give it nice colors). It resizes with the terminal if an amount of columns is not manually specified. This automatic size behaviour does not work when piping it into another program.
+Tested on Linux. Probably compatible with POSIX compatible OSes. Certainly not compatible with windows (unless you use WSL of course).
 
 
 
