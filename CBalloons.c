@@ -25,7 +25,7 @@ int sq(int n) {
     return n*n;
 }
 
-void keyboard_interrupt(int dumy) {
+void keyboard_interrupt(int dummy) {
     running = 0;
     printf("\n");
 }
@@ -41,10 +41,10 @@ typedef struct balloons {
 
 void mainloop(int min_radius, int max_radius, int min_string_length, int max_string_length, char *balloon_chars, char* balloon_string_chars, char cycles_per_balloon, char nrofbloonchars, char nrofstringchars, float sleep_time) {
     long row = 0;
-    char CharacterIsNTimesLongerInHeightThanInWidth = 2;
+    char CharacterIsNTimesLongerInHeightThanInWidth = 3;
     int array_size;
     if (max_radius + max_string_length > 0) { // This if statement exists for the people who want to make balloons that don't exist. (Radius = 0 and string length = 0)
-        array_size = (max_radius*2+max_string_length)/cycles_per_balloon;
+        array_size = (max_radius*CharacterIsNTimesLongerInHeightThanInWidth*2+max_string_length)/cycles_per_balloon;
     } else {
         array_size = 1;
     }
@@ -76,9 +76,11 @@ void mainloop(int min_radius, int max_radius, int min_string_length, int max_str
             }
             
             balloons[creation_index].radius = radius;
-            if (max_string_length > 0) {
+            if (max_string_length > 0 && max_string_length > min_string_length) {
                 balloons[creation_index].string_length = min_string_length + (random() % (max_string_length - min_string_length));
-            } else {balloons[creation_index].string_length = 0;}
+            } else {
+                balloons[creation_index].string_length = max_string_length;
+            }
             balloons[creation_index].balloon_char = balloon_chars[random() % nrofbloonchars];
             balloons[creation_index].string_char = balloon_string_chars[random() % nrofstringchars];
             creation_index ++;
@@ -91,8 +93,8 @@ void mainloop(int min_radius, int max_radius, int min_string_length, int max_str
             for (int balloon_index = 0; balloon_index < array_size; balloon_index++) {
                 balloon current_bloon = balloons[balloon_index];
                 int distance_to_bloon = sqrt(sq(current_bloon.x-column)+sq(current_bloon.y-row)*CharacterIsNTimesLongerInHeightThanInWidth);
-                char is_under_bloon = current_bloon.x == column && (current_bloon.y+current_bloon.radius/CharacterIsNTimesLongerInHeightThanInWidth) < row;
-                if (is_under_bloon && (distance_to_bloon-current_bloon.radius/CharacterIsNTimesLongerInHeightThanInWidth) < current_bloon.string_length) {
+                char is_under_bloon = (current_bloon.x == column) && ((current_bloon.y+current_bloon.radius/CharacterIsNTimesLongerInHeightThanInWidth) < (row-1));
+                if (is_under_bloon && ((row-1) - (current_bloon.y+current_bloon.radius/CharacterIsNTimesLongerInHeightThanInWidth)) < current_bloon.string_length+1) {
                     new_row[column] = current_bloon.string_char;
                     break;
                 } else if (distance_to_bloon < current_bloon.radius) {
@@ -120,7 +122,7 @@ int main(int argc, char *argv[]) { //Parse parameters and start program
     char nrofbloonchars = 8;
     char balloon_string_chars[100] = "|";
     char nrofstringchars = 1;
-    while((opt = getopt(argc, argv, ":b:s:m:r:l:t:w:c:")) != -1) {
+    while((opt = getopt(argc, argv, ":b:s:m:r:l:t:w:c:f:")) != -1) {
         switch(opt) {
             case 'b':
                 nrofbloonchars = strlen(optarg);
@@ -157,6 +159,10 @@ int main(int argc, char *argv[]) { //Parse parameters and start program
             case 'w':
                 sleep_time = (float)strtod(optarg, NULL);
                 if (sleep_time < 0) {fprintf(stderr, "Time travelling is not supported.\n(w(=tick duration in seconds) is %s)\n", optarg);return 128;}
+                break;
+            case 'f':
+                cycles_per_balloon = atoi(optarg);
+                if (cycles_per_balloon < 1) {fprintf(stderr, "This number has to be greater than 1.\n(f(=cycles per balloon) is %s)\n", optarg);return 128;}
                 break;
             case 'c':
                 columns = atoi(optarg);
