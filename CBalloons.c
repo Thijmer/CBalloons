@@ -162,7 +162,7 @@ int main(int argc, char *argv[]) { //Parse parameters and start program
                 break;
             case 'f':
                 cycles_per_balloon = atoi(optarg);
-                if (cycles_per_balloon < 1) {fprintf(stderr, "This number has to be greater than 1.\n(f(=cycles per balloon) is %s)\n", optarg);return 128;}
+                if (cycles_per_balloon < 1) {fprintf(stderr, "This number has to be greater than 0.\n(f(=cycles per balloon) is %s)\n", optarg);return 128;}
                 break;
             case 'c':
                 columns = atoi(optarg);
