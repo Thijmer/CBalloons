@@ -19,10 +19,11 @@ Tested on Linux. Probably compatible with POSIX compatible OSes. Certainly not c
   - -l:   Set the maximum string length.
   - -w:   The amount of seconds the program waits each line. This is a floating point number.
   - -c:   The amount of columns in the output. This is handy when the program outputs to a pipe.
+  - -f:   The amount of rows that are between the balloons. Increase this number for less balloons. Defaults to 1.
 
 
 ## Building it
-No-one said it was going to be normie friendly. But I think people with a little bit of Linux terminal experience will be able to follow along.
+No-one said it was going to be normie friendly. But I think people with a little bit of experience with the terminal will be able to follow along.
 #### Step one: download
 Download the 'CBalloons.c' file.
 #### Step two: Build
@@ -72,3 +73,8 @@ The explaination of this one is pretty much the same as the previous one. The di
 
 #### Make your own combination:
 You can do it!
+
+
+## Contributing:
+I'm open to contributions (=code & ideas)! Do you see a way to make the program more efficient? Please make sure to tell about it! This is my second C project, and I would love to get good at writing really efficient C code.
+
