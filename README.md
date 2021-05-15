@@ -44,7 +44,7 @@ sudo mv CBalloons /usr/local/bin
 Now you can start it from anywhere using 'CBalloons'.
 
 ## Cool tricks
-This program is so much cooler if you combine it with other programs. This program is able to output to a [pipe] (https://en.wikipedia.org/wiki/Pipeline_(Unix)). If you pipe it, you'll have to set the amount of columns manually using the -c flag or else it will default to 75. This is because pipes don't have a width, like ttys do.
+This program is so much cooler if you combine it with other programs. This program is able to output to a [pipe](https://en.wikipedia.org/wiki/Pipeline_(Unix)). If you pipe it, you'll have to set the amount of columns manually using the -c flag or else it will default to 75. This is because pipes don't have a width, like ttys do.
 
 #### With lolcat:
 You'll have to install lolcat first for this example. Lolcat gives nice rainbow colors to text.
